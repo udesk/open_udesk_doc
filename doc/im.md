@@ -1,15 +1,12 @@
 ## 交互流程
 
-
 ![交互图](im/flowchat.png)
-
 
 ## 创建客户
 
-文档参考: `http://www.udesk.cn/website/doc/apiv2/customers/#_10`
+文档参考: [创建用户](http://www.udesk.cn/website/doc/apiv2/customers/#_10)
 
-TODO: 添加新的  devices (韦昭)
-
+>  TODO: 添加新的  devices (韦昭)
 
 ## 创建会话(请求分配客服)
 
