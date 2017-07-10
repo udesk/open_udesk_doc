@@ -2,9 +2,14 @@
 
 ![交互图](im/flowchat.png)
 
+
+## Udesk API 通用说明
+
+  文档参考 <http://www.udesk.cn/website/doc/apiv2/intro/>
+
 ## 创建客户
 
-文档参考: [创建用户](http://www.udesk.cn/website/doc/apiv2/customers/#_10)
+文档参考: <http://www.udesk.cn/website/doc/apiv2/customers/#_10>
 
 >  TODO: 添加新的  devices (韦昭)
 
