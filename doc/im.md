@@ -202,11 +202,11 @@ assign_type 为 agent 时, assign_info 的结构如下:
 
 ********************************
 
-
 ## 发送消息
 
-`POST /im/messages`
+API 客户 发送消息给 客服
 
+`POST /im/messages`
 
 ### 请求参数
 
@@ -228,6 +228,8 @@ assign_type 为 agent 时, assign_info 的结构如下:
 ## 回复消息通知
 
 ### 请求方法
+
+客服推送消息给API客户
 
 `POST {接收消息URL}`
 
@@ -309,6 +311,30 @@ message:
 ********************************
 
 ## 消息内容格式
+
+### type 类型及支持列表
+
+
+类型 | type | 含义 | 发送 | 接收 | 备注
+---------|----------|---------|--------|----|---
+消息 | message  | 文本消息  | ✓ | ✓ |
+消息 | image  | 图片消息  | ✓ | ✓ |
+消息 | audio  | 语言消息  | ✓ | ✓ |
+消息 | video  | 视频消息  | ✓ | ✓ |
+消息 | file | 文件消息  | ✓ | ✓ |
+消息 | rich | 富文本消息 | ✓ | ✓ |
+消息 | struct | 结构话消息 | × | × | 暂不支持
+事件  start_session     |对话开始 | 支持 | 支持 | 
+事件  transfer      |转接事件 | 支持 | 支持 | 
+事件  close     |会话关闭事件 atuo: true | 支持 | 支持 | 
+事件  survey      |满意度评价相关事件 atuo: true | 支持 | 支持 | 
+事件  is_info_transfer      |转接事件，属于属性区别，类型（type）为message | 支持 | 支持 | 
+事件  active_guest      |客服主动会话事件 | 支持 | 支持 | 
+事件  info_appoint      | 客服分配客户事件 | 支持 | 支持 | 
+事件  form      | 发送表单消息事件 | 支持 | 支持 | 
+事件  form_received     | 接受表单消息事件 is_receive: | 支持 | 支持 | 
+事件  info      | 询前表单 is_receive: false | 支持 | 支持 | 
+事件  robot_transfer      | 机器人转接对话 | 支持 | 支持 | 
 根据 type 类型，data 的结构也有所不同:
 
 type 为 'message' 时(文本类型)：
@@ -365,31 +391,7 @@ data:
   content: "机器人转接对话"
 ```
 
-type 的取值范围:
 
-消息
-
-- message 文本消息
-- image 图片消息
-- audio 语言消息
-- video 视频消息
-- file 文件消息
-- rich 富文本消息
-- struct 结构话消息
-
-事件
-
-- start_session: 对话开始
-- transfer: 转接事件
-- close：会话关闭事件 atuo: true
-- survey：满意度评价相关事件 atuo: true
-- is_info_transfer：转接事件，属于属性区别，类型（type）为message
-- active_guest：客服主动会话事件
-- info_appoint: 客服分配客户事件
-- form: 发送表单消息事件
-- form_received: 接受表单消息事件 is_receive:
-- info: 询前表单 is_receive: false
-- robot_transfer:　机器人转接对话
 
 
 ********************************
