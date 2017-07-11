@@ -204,7 +204,7 @@ assign_type 为 agent 时, assign_info 的结构如下:
 
 ## 发送消息
 
-API客户发送消息给客服
+API客户发送消息给客服
 
 `POST /im/messages`
 
@@ -215,7 +215,7 @@ API客户发送消息给客服
 | customer_token    | 字符串 | 是   | 应用端客户唯一标识                                              |
 | im_sub_session_id | 整型   | 是   | 会话ID / ID为0或空为机器人问题                               |
 | type              | 字符串 | 否   | 消息类型, 'message', 'image', 'audio', 'rich', 默认为 'message' |
-| data              | 对象   | 是   | 消息内容(消息内容详情见 消息内容格式 一节) |
+| data              | 对象   | 是   | 消息内容 (详情见 消息内容格式 一节) |
 
 ### 返回数据
 
@@ -241,7 +241,7 @@ API客户发送消息给客服
 |----------------|--------|------|----------------------------|
 | customer_token | 字符串 | 是   | 应用端客户唯一标识         |
 | assign_type    | 字符串 | 是   | 分配类型, 'robot', 'agent' |
-| messages       | 对象数组 | 是   | 消息          |
+| messages       | 对象数组 | 是   | 消息          |
 
 根据 assign_type 不同，message 的格式有所不同
 
