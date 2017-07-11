@@ -241,14 +241,14 @@ API客户发送消息给客服
 |----------------|--------|------|----------------------------|
 | customer_token | 字符串 | 是   | 应用端客户唯一标识         |
 | assign_type    | 字符串 | 是   | 分配类型, 'robot', 'agent' |
-| message        | 对象   | 是   | 消息                       |
+| messages       | 对象数组 | 是   | 消息          |
 
 根据 assign_type 不同，message 的格式有所不同
 
 当 assign_type 为 'robot' 时, message 的格式如下
 
 ```yaml
-message:
+messages: 对像数组
   type: 消息类型
   message_id: 消息id, 字符串
   data: 消息内容
@@ -266,7 +266,9 @@ message:
 
 ```json
 {
-  "message": {
+  "customer_token": "axb",
+  "assign_type": "robot",
+  "messages": [{
     "type": "message",
     "message_id": "f862f80d-89aa-4f31-92d9-ccd4fcacffcf",
     "data": {
@@ -286,22 +288,68 @@ message:
       }
     }
   }
+  ]
 }
 ```
 
-当 assign_type 为 'agent' 时, message 的格式如下
+当 assign_type 为 'agent' 时, messages 的格式如下
 
 ```yaml
-message:
-  type: 消息类型, 'message', 'image', 'audio', 'rich', 参见 http://git.flyudesk.com/udesk/udesk_im/blob/master/doc/server/agent_logs.md
+messages:
+  type: 消息类型, 'message', 'image', 'audio', 'rich', 参见 <http://git.flyudesk.com/udesk/udesk_im/blob/master/doc/server/agent_logs.md>
   message_id: 消息id
   agent_id: 客服id
   agent_name: 客服名称
   agent_avatar: 客服头像
   im_sub_session_id: 会话ID
+  message_created_at: 消息创建时间 "20170711 09:52:11"
   data: 与发送消息内容相同
     font: 字体, 仅支持message
     content: 内容
+```
+
+```json
+{
+  "customer_token": "axb",
+  "assign_type": "agent",
+  "messages": [
+    {
+    "type": "start_session",
+    "message_id": "xxxxx",
+    "agent_id": 1,
+    "agent_name": "TOM",
+    "agent_avatar": "http://123.com/1.png",
+    "im_sub_session_id": 3,
+    "message_created_at": "20170711 09:52:11",
+    "data": {
+      "content": "对话开始"
+    }
+    },{
+    "type": "message",
+    "message_id": "xxxxx",
+    "agent_id": 1,
+    "agent_name": "TOM",
+    "agent_avatar": "http://123.com/1.png",
+    "im_sub_session_id": 3,
+    "message_created_at": "20170711 09:52:12",
+    "data": {
+      "font": "字体, 仅支持message",
+      "content": "您好,有什么可以帮助您?",
+    }
+  },
+  {
+    "type": "rich",
+    "message_id": "xxxxx",
+    "agent_id": 1,
+    "agent_name": "TOM",
+    "agent_avatar": "http://123.com/1.png",
+    "im_sub_session_id": 3,
+    "message_created_at": "20170711 09:52:13",
+    "data": {
+      "content": "本公司促销产品走过路过不要错过 <a href=\"https://xxx.com/1.png\">热销.com</a>",
+    }
+  }]
+}
 ```
 
 ### 返回数据
@@ -314,7 +362,6 @@ message:
 
 ### type 类型及支持列表
 
-
 类型 | type | 含义 | 发送 | 接收 | 备注
 ---------|----------|---------|--------|----|---
 消息 | message  | 文本消息  | ✓ | ✓ |
@@ -325,7 +372,7 @@ message:
 消息 | rich | 富文本消息 | ✓ | ✓ |
 消息 | struct | 结构话消息 | × | × | 暂不支持
 事件 | start_session  | 对话开始 | × | ✓ | 对话开始时推给客户 
-事件 | transfer      | 转接事件 | × | ✓ | 客户被转接时推给客户,客户需要修改im_sub_session_id 为新的
+事件 | transfer      | 转接事件 | × | ✓ | 客户被转接时推给客户,客户需要修改im_sub_session_id 为新的
 事件 | info_transfer | 转接事件显示内容 | × | ✓ | 客户被转接时显示的内容
 事件 | close     |会话关闭事件  | × | ✓ | 客户会话被关闭时推给客户
 事件 | survey      |满意度评价相关事件 | × | × | 只会在客服IM工作台显示
@@ -333,29 +380,34 @@ message:
 事件 | info_appoint      | 客服分配客户事件 | × | × | 暂不支持
 事件 | form      | 发送表单消息事件 | × | × | 暂不支持
 事件 | form_received     | 接受表单消息事件 | × | × | 暂不支持
-事件 | info      | 询前表单 is_receive: false | × | × | 仅用于客服显示 
+事件 | info      | 询前表单 is_receive: false | × | × | 仅用于客服显示
 事件 | robot_transfer      | 机器人转接对话 | × | × | 仅用于客服显示
+
+### 消息内容详情
 
 根据 type 类型，data 的结构也有所不同:
 
 ```yaml
+# 普通消息
 type: 'message'
 data:
     font: 字体格式, 选填, 比如
     content: 文本内容  注: 文本内容可以包含 富文本 html 标签
 
+# 图片消息
 type: 'image'
 data:
     content: url
 
-type: 'video'
+# 语音消息
+type: 'audio'
 data:
     content: url
     filename: '足球.mp4' #
     filesize: "4.3M"
     duration: 200       # 语音时长,可能没有 # 单位为s
 
-type: 'audio'  # 仅支持mp4
+type: 'video'  # 仅支持mp4
 data:
     content: url
     filename: '足球.mp4' # 文件名称
@@ -368,33 +420,26 @@ data:
 # type: struct  结构化消息, 现仅支持 web/sdk
 # 相关文档 <http://www.udesk.cn/website/doc/apiv1/im/#im_2>
 
-<!-- 以下是事件消息 -->
 # start_session 会话开始
 type: "start_session",
 data: 
   content: "对话开始"
 
-transfer  会话转接
-close     会话关闭
-survey    满意度调查
-is_info_transfer
-active_guest
-info_appoint
-form
-form
-info
+type: "transfer",
+data: 
+  content: "会话转接"
 
-# robot_transfer 机器人转接消息,客户半小时内与机器人有过聊天,会显示给客服,不会发送事件给客服或客户
-type: "robot_transfer",
-data:
-  content: "机器人转接对话"
+type: "close",
+data: 
+  content: "会话关闭"
+
+type: "info_transfer",
+data: 
+  content: "满意度调查"
+
 ```
 
-
-
-
 ********************************
-
 
 ## 机器人问答评价
 
@@ -422,14 +467,11 @@ data:
 
 TODO: 以后完善
 
-
 ****************************************************************
-
 
 ## 会话评价
 
 `POST /im_sessions/survey`
-
 
 ### 请求参数
 
@@ -454,13 +496,11 @@ TODO: 以后完善
 
 `GET /im/queue_status`
 
-
 ### 请求参数
 
 |     参数名     | 必填 |        说明        |
 |----------------|------|--------------------|
 | customer_token | 是   | 应用端客户唯一标识 |
-
 
 ### 返回数据
 
