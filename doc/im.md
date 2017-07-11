@@ -324,17 +324,17 @@ message:
 消息 | file | 文件消息  | ✓ | ✓ |
 消息 | rich | 富文本消息 | ✓ | ✓ |
 消息 | struct | 结构话消息 | × | × | 暂不支持
-事件  start_session     |对话开始 | 支持 | 支持 | 
-事件  transfer      |转接事件 | 支持 | 支持 | 
-事件  close     |会话关闭事件 atuo: true | 支持 | 支持 | 
-事件  survey      |满意度评价相关事件 atuo: true | 支持 | 支持 | 
-事件  is_info_transfer      |转接事件，属于属性区别，类型（type）为message | 支持 | 支持 | 
-事件  active_guest      |客服主动会话事件 | 支持 | 支持 | 
-事件  info_appoint      | 客服分配客户事件 | 支持 | 支持 | 
-事件  form      | 发送表单消息事件 | 支持 | 支持 | 
-事件  form_received     | 接受表单消息事件 is_receive: | 支持 | 支持 | 
-事件  info      | 询前表单 is_receive: false | 支持 | 支持 | 
-事件  robot_transfer      | 机器人转接对话 | 支持 | 支持 | 
+事件 | start_session  | 对话开始 | 不支持 | 支持 | 对话开始时推给客户 
+事件 | transfer      | 转接事件 | 不支持 | 支持 | 客户被转接时推给客户,客户需要修改im_sub_session_id 为新的
+事件 | info_transfer | 转接事件显示内容 | 不支持 | 支持 | 客户被转接时显示的内容
+事件 | close     |会话关闭事件  | 不支持 | 支持 | 客户会话被关闭时推给客户
+事件 | survey      |满意度评价相关事件 | 不支持 | 不支持 | 只会在客服IM工作台显示
+事件 | active_guest      | 客服主动会话事件 | 不支持 | 不支持 | 仅支持web
+事件 | info_appoint      | 客服分配客户事件 | 支持 | 支持 | 
+事件 | form      | 发送表单消息事件 | 支持 | 支持 | 
+事件 | form_received     | 接受表单消息事件 is_receive: | 支持 | 支持 | 
+事件 | info      | 询前表单 is_receive: false | 支持 | 支持 | 
+事件 | robot_transfer      | 机器人转接对话 | 支持 | 支持 | 
 根据 type 类型，data 的结构也有所不同:
 
 type 为 'message' 时(文本类型)：
