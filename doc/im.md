@@ -215,8 +215,74 @@ assign_type 为 agent 时, assign_info 的结构如下:
 | customer_token    | 字符串 | 是   | 应用端客户唯一标识                                              |
 | im_sub_session_id | 整型   | 是   | 会话ID / ID为0或空为机器人问题                               |
 | type              | 字符串 | 否   | 消息类型, 'message', 'image', 'audio', 'rich', 默认为 'message' |
-| data              | 对象   | 是   | 消息内容                                                        |
+| data              | 对象   | 是   | 消息内容(消息内容详情见 消息内容格式 一节) |
 
+### 返回数据
+
+| 属性名 | 类型 |           说明           |
+|--------|------|--------------------------|
+| code   | 整型 | 执行结果码，1000代表成功 |
+
+********************************
+
+## 回复消息通知
+
+### 请求方法
+
+`POST {接收消息URL}`
+
+> 接收消息URL，请联系我们的技术支持为您设置，后期会提供设置界面
+
+### 请求参数
+
+|     参数名     |  类型  | 必填 |            说明            |
+|----------------|--------|------|----------------------------|
+| customer_token | 字符串 | 是   | 应用端客户唯一标识         |
+| assign_type    | 字符串 | 是   | 分配类型, 'robot', 'agent' |
+| message        | 对象   | 是   | 消息                       |
+
+根据 assign_type 不同，message 的格式有所不同
+
+当 assign_type 为 'robot' 时, message 的格式如下
+
+```yaml
+message:
+  type: 消息类型
+  message_id: 消息id, 字符串
+  data: 消息内容
+    question_id: 0为寒暄库，非问答; 非0时，可对问答进行有用无用评价
+    question_title: 问题内容, 字符串
+    answer: 问题答案文字, 字符串
+    gus_list: 问题引导列表
+      - question_title: 问题内容, 字符串
+    relate_list: 相关问题列表
+      - question_title: 问题内容, 字符串
+    third_url: 相关推荐链接
+      url: 链接地址, 字符串
+```
+
+当 assign_type 为 'agent' 时, message 的格式如下
+
+```yaml
+message:
+  type: 消息类型, 'message', 'image', 'audio', 'rich', 参见 http://git.flyudesk.com/udesk/udesk_im/blob/master/doc/server/agent_logs.md
+  message_id: 消息id
+  agent_id: 客服id
+  agent_name: 客服名称
+  agent_avatar: 客服头像
+  im_sub_session_id: 会话ID
+  data: 与发送消息内容相同
+    font: 字体, 仅支持message
+    content: 内容
+```
+
+### 返回数据
+
+请在10秒内返回 HTTP Status Code 200，响应体为空，否则 UDesk 端会认为发送失败，并尝试重发
+
+********************************
+
+## 消息内容格式
 根据 type 类型，data 的结构也有所不同:
 
 type 为 'message' 时(文本类型)：
@@ -244,9 +310,12 @@ data:
     filename: '足球.mp4' # 文件名称
     filesize: "4.3M"    # 文件大小
 
-TODO: 补全如下类型
-rich    富文本消息
-struct  结构化消息
+type: 'rich'  # 支持
+data:
+    content: <p>您好，小雅客服很高兴为您服务，请问有什么可以帮您？</p>
+
+# type: struct  结构化消息, 现仅支持 web/sdk
+# 相关文档 <http://www.udesk.cn/website/doc/apiv1/im/#im_2>
 
 <!-- 以下是事件消息 -->
 # start_session 会话开始
@@ -295,74 +364,6 @@ type 的取值范围:
 - form_received: 接受表单消息事件 is_receive:
 - info: 询前表单 is_receive: false
 - robot_transfer:　机器人转接对话
-
-
-### 返回数据
-
-| 属性名 | 类型 |           说明           |
-|--------|------|--------------------------|
-| code   | 整型 | 执行结果码，1000代表成功 |
-
-
-********************************
-
-
-## 回复消息通知
-
-### 请求方法
-
-`POST {接收消息URL}`
-
-> 接收消息URL，请联系我们的技术支持为您设置，后期会提供设置界面
-
-
-### 请求参数
-
-|     参数名     |  类型  | 必填 |            说明            |
-|----------------|--------|------|----------------------------|
-| customer_token | 字符串 | 是   | 应用端客户唯一标识         |
-| assign_type    | 字符串 | 是   | 分配类型, 'robot', 'agent' |
-| message        | 对象   | 是   | 消息                       |
-
-根据 assign_type 不同，message 的格式有所不同
-
-当 assign_type 为 'robot' 时, message 的格式如下
-
-```yaml
-message:
-  type: 消息类型
-  message_id: 消息id, 字符串
-  data: 消息内容
-    question_id: 0为寒暄库，非问答; 非0时，可对问答进行有用无用评价
-    question_title: 问题内容, 字符串
-    answer: 问题答案文字, 字符串
-    gus_list: 问题引导列表
-      - question_title: 问题内容, 字符串
-    relate_list: 相关问题列表
-      - question_title: 问题内容, 字符串
-    third_url: 相关推荐链接
-      url: 链接地址, 字符串
-```
-
-当 assign_type 为 'agent' 时, message 的格式如下
-
-```yaml
-message:
-  type: 消息类型, 'message', 'image', 'audio', 'rich', 参见 http://git.flyudesk.com/udesk/udesk_im/blob/master/doc/server/agent_logs.md
-  message_id: 消息id
-  agent_id: 客服id
-  agent_name: 客服名称
-  agent_avatar: 客服头像
-  im_sub_session_id: 会话ID
-  data: 与发送消息内容相同
-    font: 字体, 仅支持message
-    content: 内容
-```
-
-
-### 返回数据
-
-请在10秒内返回 HTTP Status Code 200，响应体为空，否则 UDesk 端会认为发送失败，并尝试重发
 
 
 ********************************
