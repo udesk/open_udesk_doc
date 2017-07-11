@@ -81,7 +81,7 @@ assign_type 为 agent 时, assign_info 的结构如下:
 | agent_id          | 整型   | 分配的客服id                         |
 | agent_name        | 字符串 | 分配的客服名称                       |
 | agent_avatar      | 字符串 | 客服头像地址                         |
-| survey_options    | 哈稀   | 满意度评价设置                      |
+| survey_options    | 对象   | 满意度评价设置                      |
 
 ##### **正确返回**
 
@@ -222,6 +222,11 @@ API客户发送消息给客服
 | 属性名 | 类型 |           说明           |
 |--------|------|--------------------------|
 | code   | 整型 | 执行结果码，1000代表成功 |
+
+TODO:
+
++ API客户发送到已经关闭会话的处理
++ API客户发送到离线超时的客服的处理
 
 ********************************
 
@@ -383,6 +388,8 @@ messages:
 事件 | info      | 询前表单 is_receive: false | × | × | 仅用于客服显示
 事件 | robot_transfer      | 机器人转接对话 | × | × | 仅用于客服显示
 
+> 注: 不支持/暂不支持/仅用于客服显示的消息,不要在客户端显示处理
+
 ### 消息内容详情
 
 根据 type 类型，data 的结构也有所不同:
@@ -429,13 +436,13 @@ type: "transfer",
 data: 
   content: "会话转接"
 
+type: "info_transfer",
+data: 
+  content: "会话转接成功,客服xx为您服务"
+
 type: "close",
 data: 
   content: "会话关闭"
-
-type: "info_transfer",
-data: 
-  content: "满意度调查"
 
 ```
 
