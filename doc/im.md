@@ -478,7 +478,7 @@ TODO: 以后完善
 
 ## 会话评价
 
-`POST /im_sessions/survey`
+`POST /im/sessions/survey`
 
 ### 请求参数
 
