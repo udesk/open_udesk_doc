@@ -11,12 +11,13 @@
 
 文档参考: <http://www.udesk.cn/website/doc/apiv2/customers/#_10>
 
->  TODO: 添加新的  devices (韦昭)
+ TODO:
+
+   + [] 添加传入 devices, 可以更新用户设备 / 韦昭
 
 ## 创建会话(请求分配客服)
 
 `POST /im/sessions`
-
 
 ### 请求参数
 
@@ -42,6 +43,8 @@
 
 根据 assign_type 不同 assign_info 的结构不同。
 
+#### 机器人返回
+
 assign_type 为 robot 时, assign_info 的结构如下:
 
 |     属性名      |  类型  |    说明    |
@@ -51,6 +54,23 @@ assign_type 为 robot 时, assign_info 的结构如下:
 | welcome_message | 字符串 | 欢迎语     |
 | unknow_message  | 字符串 | 未知回答语 |
 
+**示例**
+
+```json
+{
+  "code": 1000,
+  "message": "请求成功",
+  "assign_type": "robot",
+  "assign_info": {
+    "robot_name": "Udesk客服机器人",
+    "robot_avatar": "https://rd-dota.udesk.cn/entry/images/agent-avatar-3e6a68e1e1fcb4db653d9e93263f7946.png",
+    "welcome_message": "<p>您好，我是智能客服机器人，我可以回答您相关的业务问题，有什么问题就问我吧！ 很高兴为您服务！</p><p><br/></p>",
+    "unknow_message": "<p>对不起，我目前只能回答常见的业务相关问题！此问题暂不在我知识范围内，我会继续努力学习的！您也可以换个简单的问法向我提问，或许我就可以回答您了...</p>",
+  }
+}
+```
+
+#### 请求客服返回
 
 assign_type 为 agent 时, assign_info 的结构如下:
 
@@ -61,9 +81,66 @@ assign_type 为 agent 时, assign_info 的结构如下:
 | agent_id          | 整型   | 分配的客服id                         |
 | agent_name        | 字符串 | 分配的客服名称                       |
 | agent_avatar      | 字符串 | 客服头像地址                         |
-| survey_options    | 哈稀   | 满意度评价设置                       |
+| survey_options    | 哈稀   | 满意度评价设置                      |
 
-survey_options 的元素格式如下:
+##### **正确返回**
+
+```json
+{
+  "code": 1000,
+  "message": "请求成功",
+  "assign_type": "agent",
+  "assign_info": {
+    "im_sub_session_id": 1234,
+    "count": 0,
+    "agent_id": 3,
+    "agent_name": "Tom",
+    "agent_avatar": "",
+    "survey_options": "见survey_options一节",
+  }
+}
+```
+
+##### **排队返回**
+
+```json
+{
+  "code": 2001,
+  "message": "当前客服正繁忙，您排在第3位。",
+  "assign_type": "agent",
+  "assign_info": {
+    "count": 3,
+  }
+}
+```
+
+##### **分配临界**
+
+```json
+{
+  "code": 2001,
+  "message": "客服分配中!",
+  "assign_type": "agent",
+  "assign_info": {
+    "count": 0,
+  }
+}
+```
+
+##### **客服不在线**
+
+```json
+{
+  "code": 2002,
+  "message": "当前没有客服在线",
+  "assign_type": "agent",
+  "assign_info": {
+    "count": 0,
+  }
+}
+```
+
+##### ** survey_options **
 
 ```yaml
 "survey_options":
@@ -168,19 +245,29 @@ data:
     filesize: "4.3M"    # 文件大小
 
 TODO: 补全如下类型
-rich
-struct
-start_session
-transfer
-close
-survey
+rich    富文本消息
+struct  结构化消息
+
+<!-- 以下是事件消息 -->
+# start_session 会话开始
+type: "start_session", 
+data: 
+  content: "对话开始"
+
+transfer  会话转接
+close     会话关闭
+survey    满意度调查
 is_info_transfer
 active_guest
 info_appoint
 form
 form
 info
-robot_transfer
+
+# robot_transfer 机器人转接消息,客户半小时内与机器人有过聊天,会显示给客服,不会发送事件给客服或客户
+type: "robot_transfer",
+data:
+  content: "机器人转接对话"
 ```
 
 type 的取值范围:
