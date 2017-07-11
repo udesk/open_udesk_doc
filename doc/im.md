@@ -331,14 +331,17 @@ type 的取值范围:
 ```yaml
 message:
   type: 消息类型
-  message_id: 消息id
+  message_id: 消息id, 字符串
   data: 消息内容
     question_id: 0为寒暄库，非问答; 非0时，可对问答进行有用无用评价
-    question_title: 问题文字
-    answer: 问题答案文字
+    question_title: 问题内容, 字符串
+    answer: 问题答案文字, 字符串
     gus_list: 问题引导列表
+      - question_title: 问题内容, 字符串
     relate_list: 相关问题列表
+      - question_title: 问题内容, 字符串
     third_url: 相关推荐链接
+      url: 链接地址, 字符串
 ```
 
 当 assign_type 为 'agent' 时, message 的格式如下
