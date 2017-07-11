@@ -261,6 +261,32 @@ message:
       url: 链接地址, 字符串
 ```
 
+
+```json
+{
+  "message": {
+    "type": "message",
+    "message_id": "f862f80d-89aa-4f31-92d9-ccd4fcacffcf",
+    "data": {
+      "question_id": 210530,
+      "question_title": "公司业务是什么",
+      "answer": "嗨,我们是做云客服的公司!不同开发就可以和微信微博web上的用户进行沟通和管理",
+      "gus_list": [
+        {"question_title": "你会什么业务"},
+        {"question_title": "你们公司有什么业务"}
+      ],
+      "relate_list": [
+        {"question_title": "公司在哪里"},
+        {"question_title": "联系方式是什么"}
+      ],
+      "third_url": {
+        "url": "http://www.udesk.cn"
+      }
+    }
+  }
+}
+```
+
 当 assign_type 为 'agent' 时, message 的格式如下
 
 ```yaml
