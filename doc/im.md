@@ -204,7 +204,7 @@ assign_type 为 agent 时, assign_info 的结构如下:
 
 ## 发送消息
 
-API 客户 发送消息给 客服
+API客户发送消息给客服
 
 `POST /im/messages`
 
@@ -330,7 +330,7 @@ message:
 事件 | close     |会话关闭事件  | 不支持 | 支持 | 客户会话被关闭时推给客户
 事件 | survey      |满意度评价相关事件 | 不支持 | 不支持 | 只会在客服IM工作台显示
 事件 | active_guest      | 客服主动会话事件 | 不支持 | 不支持 | 仅支持web
-事件 | info_appoint      | 客服分配客户事件 | 支持 | 支持 | 
+事件 | info_appoint      | 客服分配客户事件 | 支持 | 不支持 | 
 事件 | form      | 发送表单消息事件 | 支持 | 支持 | 
 事件 | form_received     | 接受表单消息事件 is_receive: | 支持 | 支持 | 
 事件 | info      | 询前表单 is_receive: false | 支持 | 支持 | 
