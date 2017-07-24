@@ -2,6 +2,7 @@
 | 内容 | 日期 | 更新人 |
 |---|---|---|
 |发送消息 im/messages 添加唯一标识 message_id | 20170721 | 韦昭 |
+|info_transfer 不再给客户,客户收到的是 message | 20170724 | 韦昭 |
 
 ## 交互流程
 
@@ -384,7 +385,7 @@ messages:
 消息 | struct | 结构话消息 | × | × | 暂不支持
 事件 | start_session  | 对话开始 | × | ✓ | 对话开始时推给客户 
 事件 | transfer      | 转接事件 | × | ✓ | 客户被转接时推给客户,客户需要修改im_sub_session_id 为新的
-事件 | info_transfer | 转接事件显示内容 | × | ✓ | 客户被转接时显示的内容
+事件 | info_transfer | 转接事件显示内容 | × | × | 客户被转接时显示给客服的提示内容
 事件 | close     |会话关闭事件  | × | ✓ | 客户会话被关闭时推给客户
 事件 | survey      |满意度评价相关事件 | × | × | 只会在客服IM工作台显示
 事件 | active_guest      | 客服主动会话事件 | × | × | 仅支持web访客
@@ -433,18 +434,19 @@ data:
 # type: struct  结构化消息, 现仅支持 web/sdk
 # 相关文档 <http://www.udesk.cn/website/doc/apiv1/im/#im_2>
 
-# start_session 会话开始
+# start_session 会话开始,通常为数组推送,后面有欢迎语 message 
 type: "start_session",
 data: 
   content: "对话开始"
 
+# transfer 会话被转接,通常为数组推送,后面有转接内容 message 如: '会话转接成功,客服xx为您服务'
 type: "transfer",
 data: 
   content: "会话转接"
 
 type: "info_transfer",
 data: 
-  content: "会话转接成功,客服xx为您服务"
+  content: "客服Jerry213转接会话"
 
 type: "close",
 data: 
