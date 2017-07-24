@@ -214,6 +214,8 @@ API客户发送消息给客服
 
 `POST /im/messages`
 
+> 注意: 发送给机器人的消息 type 参数目前只支持 'message' 类型
+
 ### 请求参数
 
 |      参数名       |  类型  | 必填 |                               说明                              |
@@ -486,7 +488,7 @@ TODO: 以后完善
 
 ## 会话评价
 
-`POST /im_sessions/survey`
+`POST /im/sessions/survey`
 
 ### 请求参数
 
