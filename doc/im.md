@@ -81,15 +81,17 @@
 
 ### 请求参数
 
-| 参数名            | 类型  | 必填  | 说明                                      |
-|----------------|-----|-----|-----------------------------------------|
-| customer_token | 字符串 | 是   | 应用端客户唯一标识                               |
-| assign_type    | 字符串 | 否   | 期望的分配类型, 'robot', 'agent', 默认为 'robot'  |
-| agent_id       | 整型  | 否   | 指定分配的客服id，如果指定忽略 assign_type 和 group_id |
-| group_id       | 整型  | 否   | 指定分配的客服组id，如果指定忽略 assign_type           |
-| channel        | 字符串 | 否   | 自定义渠道                                   |
+|     参数名     |  类型  | 必填 |                          说明                          |
+|----------------|--------|------|--------------------------------------------------------|
+| customer_token | 字符串 | 是   | 应用端客户唯一标识                                     |
+| assign_type    | 字符串 | 否   | 期望的分配类型, 'robot', 'agent', 默认为 'robot'       |
+| agent_id       | 整型   | 否   | 指定分配的客服id，如果指定忽略 assign_type 和 group_id |
+| group_id       | 整型   | 否   | 指定分配的客服组id，如果指定忽略 assign_type           |
+| channel        | 字符串 | 否   | 自定义渠道                                             |
+| robot_role_id  | 字符串 | 否   | 客户角色                                               |
 
-> 如果 agent_id 和 group_id 都没有指定，且 assign_type 为 'agent'，则按系统分配规则分配
+> 如果 agent_id 和 group_id 都没有指定，且 assign_type 为 'agent'，则按系统分配规则分配  
+> robot_role_id 需要先在云问端设置好
 
 
 ### 返回数据
