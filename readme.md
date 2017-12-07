@@ -3,3 +3,5 @@
 ## [Udesk IM ApiV2](/doc/im.md)
 
 ## [Udesk IM web h5 离线推送](/doc/im_h5_push.md)
+
+## [排队放弃](/doc/im/shut_queues.md)
