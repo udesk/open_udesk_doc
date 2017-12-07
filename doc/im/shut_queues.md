@@ -2,6 +2,8 @@
 
  用于取得放弃排队的用户信息
 
+ **重要:接口遵循** <http://www.udesk.cn/website/doc/apiv2/intro/>
+
 ## 请求
 
   GET /open_api_v1/im/im_queues.json
