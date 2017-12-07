@@ -23,10 +23,10 @@ shut_queues:  // 内容为数组
     -
     customer_id: id
     customer_name: 用户匿称  
-    channel: 渠道
-    queue_start_time: 开始排队时间
-    queue_seconds: 排队时间
-    queue_name: 排队队列名
+    channel: web // 渠道, web wechat ios android weibo api mchat
+    queue_start_time: '2017-11-10T09:55:05.000+08:00' //开始排队时间
+    queue_seconds: 104 //排队时间
+    queue_name: '公司' //排队队列名
 current_page: 1  // 当前页数
 total_pages: 2   // 总页面
 count: 200 // 当页总数?
