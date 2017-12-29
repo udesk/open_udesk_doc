@@ -9,6 +9,7 @@
 | 内容  | 日期        | 更新人 | 版本   |
 |-----|-----------|-----|------|
 | 创建  | 201700803 | 韦昭  | v0.1 |
+| 更新  | 20171229 | 王明乐  | v0.2 |
 
 ## 概述
 
@@ -80,3 +81,24 @@
 | messages         | 对象数组 | 是   | 消息         |
 
 **messages** [文档内容请参考](https://github.com/udesk/open_udesk_doc/blob/master/doc/im.md#%E5%9B%9E%E5%A4%8D%E6%B6%88%E6%81%AF%E9%80%9A%E7%9F%A5) 
+
+
+### 1)关闭会话事件推送
+![交互图](im/h5_pushclose.png)
+
+`POST #配置的h5push地址`
+**注** 关闭事件只有在开启离线推送前提下生效
+
+#### 推送消息格式
+
+| 参数名              | 类型   | 必填  | 说明         |
+|------------------|------|-----|------------|
+| web_token        | 字符串  | 是   | 应用端客户唯一标识  |
+| im_web_plugin_id | 数字   | 否   | 区别不同的会话的插件 |
+| messages         | 对象数组 | 是   | 消息         |
+
+**messages** [文档内容请参考](https://github.com/udesk/open_udesk_doc/blob/develop/doc/im.md#%E5%9B%9E%E5%A4%8D%E6%B6%88%E6%81%AF%E9%80%9A%E7%9F%A5) 
+
+### 2)关闭会话事件推送后客户评价
+
+[文档内容请参考](https://github.com/udesk/open_udesk_doc/blob/master/doc/im.md#%E4%BC%9A%E8%AF%9D%E8%AF%84%E4%BB%B7)

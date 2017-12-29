@@ -208,7 +208,7 @@ assign_type 为 agent 时, assign_info 的结构如下:
 
 ```yaml
 "survey_options":
-    "enabled": true,   # 是否开房
+    "enabled": true,   # 是否开放
     "name": "满意度评价",
     "title": "您对本服务的评价是?",  # 给客户显示提示
     "desc": "感谢您的支持，为了使我们更好的为您服务，请您为本次服务做一个评价（回复字母即可）",  #微信微博API满意度评价引导语
@@ -423,7 +423,21 @@ messages:
     "data": {
       "content": "本公司促销产品走过路过不要错过 <a href=\"https://xxx.com/1.png\">热销.com</a>",
     }
-  }]
+  },
+  {
+    "type": "close",
+    "message_id": "xxxxx",
+    "agent_id": 1,
+    "agent_name": "TOM",
+    "agent_avatar": "http://123.com/1.png",
+    "im_sub_session_id": 3,
+    "message_created_at": "2018-01-01 00:00:00",
+    "data": {
+        "content": "关闭会话",
+        "survey_options": "见survey_options一节",
+      }
+  }
+  ]
 }
 ```
 
@@ -449,7 +463,7 @@ messages:
 | 事件  | start_session  | 对话开始                   | ×   | ✓   | 对话开始时推给客户                              |
 | 事件  | transfer       | 转接事件                   | ×   | ✓   | 客户被转接时推给客户,客户需要修改im_sub_session_id 为新的 |
 | 事件  | info_transfer  | 转接事件显示内容               | ×   | ×   | 客户被转接时显示给客服的提示内容                       |
-| 事件  | close          | 会话关闭事件                 | ×   | ✓   | 客户会话被关闭时推给客户                           |
+| 事件  | close          | 会话关闭事件                 | ✓   | ✓   | 客户会话被关闭时推给客户                           |
 | 事件  | survey         | 满意度评价相关事件              | ×   | ×   | 只会在客服IM工作台显示                           |
 | 事件  | active_guest   | 客服主动会话事件               | ×   | ×   | 仅支持web访客                               |
 | 事件  | info_appoint   | 客服分配客户事件               | ×   | ×   | 暂不支持                                   |
