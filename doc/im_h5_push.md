@@ -97,7 +97,7 @@
 | im_web_plugin_id | 数字   | 否   | 区别不同的会话的插件 |
 | messages         | 对象数组 | 是   | 消息         |
 
-**messages** [文档内容请参考](https://github.com/udesk/open_udesk_doc/blob/develop/doc/im.md#%E5%9B%9E%E5%A4%8D%E6%B6%88%E6%81%AF%E9%80%9A%E7%9F%A5) 
+**messages** [文档内容请参考](https://github.com/udesk/open_udesk_doc/blob/master/doc/im.md#%E5%9B%9E%E5%A4%8D%E6%B6%88%E6%81%AF%E9%80%9A%E7%9F%A5) 
 
 ### 2)关闭会话事件推送后客户评价
 

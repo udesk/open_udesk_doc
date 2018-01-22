@@ -433,6 +433,7 @@ messages:
     "im_sub_session_id": 3,
     "message_created_at": "2018-01-01 00:00:00",
     "data": {
+        "close_type": "normal(正常)|redirect(转接)|force(强制)"
         "content": "关闭会话",
         "survey_options": "见survey_options一节",
       }
