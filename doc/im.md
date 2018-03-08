@@ -214,7 +214,36 @@ assign_type 为 agent 时, assign_info 的结构如下:
     "desc": "感谢您的支持，为了使我们更好的为您服务，请您为本次服务做一个评价（回复字母即可）",  #微信微博API满意度评价引导语
     "remark_enabled": true,  # 是否可填写评价备注
     "remark": "您可填写评价备注", # 评价备注提示
-    "options": [    #  评价选项/ id对应 /im_sessions/survey 的 option_id
+    "show_type": String text|expression|star  // 满意度种类
+    text: {  // 可选,当show_type 为 text显示 
+        default_option_id: 
+        options: [{
+          id: 
+          text: 非常满意|满意|一般|不满意|非常不满意 (可以修改的,显示在BI中)
+          desc: 不可以修改的
+          tags: [{text: '回复及时'},{text: ''}]
+          remark_option: hide|required|optional
+          }]
+      },
+      expression: { // 可选,当show_type 为 expression 显示
+        default_option_id: 
+        options: [{
+          id: 
+          text: 满意|一般|不满意
+          tags: [{text: '回复及时'},{text: ''}]
+          remark_option: hide|required|optional
+          }]
+      },
+      star: {  // 可选,当show_type 为 star 显示
+        default_option_id: 
+        options: [{
+          id: 
+          text: 满意|一般|不满意
+          tags: [{text: '回复及时'},{text: ''}]
+          remark_option: hide|required|optional
+          }]
+      },
+    "options": [    #  兼容模式,评价选项/ id对应 /im_sessions/survey 的 option_id
       {
         "id": 36,
         "text": "超级满意2",
