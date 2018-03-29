@@ -4,6 +4,7 @@
 
 | 内容                                 | 日期       | 更新人 | 版本   |
 |------------------------------------|----------|-----|------|
+| 消息接口对接Urobot                       | 20180330  | 吴雨桐  |      |
 | 添加常见问答(重要)                        | 201700906 | 韦昭  | v1.1 |
 | 添加客户是否会话中接口                        | 20170803 | 韦昭  | v1.0 |
 | 发送消息 添加错误返回类型                      | 20170728 | 韦昭  | v0.4 |
@@ -85,15 +86,18 @@
 |     参数名     |  类型  | 必填 |                          说明                          |
 |----------------|--------|------|--------------------------------------------------------|
 | customer_token | 字符串 | 是   | 应用端客户唯一标识                                     |
-| assign_type    | 字符串 | 否   | 期望的分配类型, 'robot', 'agent', 默认为 'robot'       |
+| assign_type    | 字符串 | 否   | 期望的分配类型, 'robot', 'urobot', 'agent', 默认为 'robot'       |
 | agent_id       | 整型   | 否   | 指定分配的客服id，如果指定忽略 assign_type 和 group_id |
 | group_id       | 整型   | 否   | 指定分配的客服组id，如果指定忽略 assign_type           |
 | channel        | 字符串 | 否   | 自定义渠道                                             |
 | robot_role_id  | 字符串 | 否   | 客户角色                                               |
+| robot_id       | 整型   | 否   | udesk机器人id                                        |
+| scene_id       | 整型   | 否   | udesk机器人对应场景id                                    |
 
 > customer_token 与创建客户时的 open_api_token 一致
-> 如果 agent_id 和 group_id 都没有指定，且 assign_type 为 'agent'，则按系统分配规则分配  
+> 如果 agent_id 和 group_id 都没有指定，且 assign_type 为 'agent'，则按系统分配规则分配
 > robot_role_id 需要先在云问端设置好
+> assign_type为’urobot‘时，robot_id和scene_id必填
 
 
 ### 返回数据
@@ -102,7 +106,7 @@
 |-------------|-----|------------------------|
 | code        | 整型  | 执行结果码，1000代表成功         |
 | message     | 字符串 | 分配成功时为欢迎语，失败时为错误提示     |
-| assign_type | 字符串 | 分配类型, 'robot', 'agent' |
+| assign_type | 字符串 | 分配类型, 'robot', 'agent', 'urobot' |
 | assign_info | 对象  | 分配结果信息                 |
 
 根据 assign_type 不同 assign_info 的结构不同。
@@ -130,6 +134,52 @@ assign_type 为 robot 时, assign_info 的结构如下:
     "robot_avatar": "https://rd-dota.udesk.cn/entry/images/agent-avatar-3e6a68e1e1fcb4db653d9e93263f7946.png",
     "welcome_message": "<p>您好，我是智能客服机器人，我可以回答您相关的业务问题，有什么问题就问我吧！ 很高兴为您服务！</p><p><br/></p>",
     "unknow_message": "<p>对不起，我目前只能回答常见的业务相关问题！此问题暂不在我知识范围内，我会继续努力学习的！您也可以换个简单的问法向我提问，或许我就可以回答您了...</p>",
+  }
+}
+```
+
+assign_type 为 ‘urobot’ 时, assign_info 的结构如下:
+
+| 属性名         | 类型   | 说明      |
+| ----------- | ---- | ------- |
+| sessionId   | 整型   | 会话id    |
+| logId       | 整型   | 该条log的id |
+| leadingWord | 字符串  | 引导语     |
+| helloWorld  | 字符串  | 欢迎语     |
+| robotName   | 字符串  | 机器人名称   |
+| logoUrl     | 字符串  | 机器人头像   |
+| topAsk      | 对象   | 常见问题列表  |
+
+**示例**
+
+```json
+{
+  "code": 1000,
+  "message": "请求成功",
+  "assign_type": "urobot",
+  "assign_info": {
+    "sessionId": 23702,
+    "logId": 55392,
+    "robotName": "测试",
+    "logoUrl": null,
+    "leadingWord": "你好，很高兴为您服务！",
+    "helloWorld": "你好，很高兴为您服务！"
+    "topAsk": [
+      {
+        "quesitionType": "问题类型１"，
+        "quesitionTypeId": 2,
+        "optionsList":[
+          {
+            "quesition":"问题１",
+            "quesitionId": 2122
+          },
+          {
+            "quesition": "问题２",
+            "quesitionId": 3222
+          }
+        ]
+      }
+    ]
   }
 }
 ```
@@ -278,10 +328,14 @@ API客户发送消息给客服
 | 参数名               | 类型  | 必填  | 说明                                                       |
 |-------------------|-----|-----|----------------------------------------------------------|
 | customer_token    | 字符串 | 是   | 应用端客户唯一标识                                                |
-| im_sub_session_id | 整型  | 是   | 会话ID / ID为0或空为机器人问题                                      |
-| message_id        | 字符串 | 是   | 消息id/公司消息唯一标识                                            |
+| im_sub_session_id | 整型  | 是   | 会话ID / ID为0或空为机器人问题/ID为-1为Udesk机器人问题                 |
+| message_id        | 字符串 | 是   | 消息id/公司消息唯一标识（Udesk机器人可不传）                           |
 | type              | 字符串 | 否   | 消息类型, 'message', 'image', 'audio', 'rich', 默认为 'message' |
 | data              | 对象  | 是   | 消息内容 (详情见 消息内容格式 一节)                                     |
+| robot_id          | 整型   | 否    | Udesk机器人id(Udesk机器人必填)                   |
+| scene_id          | 整型   | 否    | Udesk机器人对应场景id(Udesk机器人必填)               |
+| urobot_session_id | 整型   |否     |Udesk机器人对应的会话id                             |
+
 
 ### 返回数据
 
@@ -290,7 +344,7 @@ API客户发送消息给客服
 | code | 整型  | 执行结果码，1000代表成功 |
 
 
-### 错误返回
+### 错误返回(assign_type为'robot'时)
 
 | code 值 | message 说明 |             |
 |--------|------------|-------------|
@@ -315,7 +369,7 @@ API客户发送消息给客服
 | 参数名            | 类型   | 必填  | 说明                     |
 |----------------|------|-----|------------------------|
 | customer_token | 字符串  | 是   | 应用端客户唯一标识              |
-| assign_type    | 字符串  | 是   | 分配类型, 'robot', 'agent' |
+| assign_type    | 字符串  | 是   | 分配类型, 'robot', 'agent', 'urobot' |
 | messages       | 对象数组 | 是   | 消息                     |
 
 根据 assign_type 不同，message 的格式有所不同
@@ -365,6 +419,37 @@ messages: 对像数组
   }
   ]
 }
+```
+
+当 assign_type 为 'urobot' 时, message 的格式如下
+
+```yaml
+messages: 对像
+  sessionId: 会话id， 字符串
+  logId:  消息的Id
+  aid: 答案id
+  ansContent: 答案内容
+  ansType: 答案类型 (1表示普通答案，4表示返回寒暄，6表示未知说辞)
+  hitQuestion: 问题内容
+  suggestQuestionList: 建议列表
+```
+
+```json
+    {
+      "sessionId": 1835244,
+      "logId": 3574331,
+      "aid": 12,
+      "ansContent": "申诉流程",
+      "ansType": 1,
+      hitQuestion: "账号申诉",
+      "suggestQuestionList": [
+      {
+          "id": 434,
+          "content": "问题1",
+          "type": 1
+        }
+      ]
+    }
 ```
 
 当 assign_type 为 'agent' 时, messages 的格式如下
@@ -512,22 +597,22 @@ data:
 # type: struct  结构化消息, 现仅支持 web/sdk
 # 相关文档 <http://www.udesk.cn/website/doc/apiv1/im/#im_2>
 
-# start_session 会话开始,通常为数组推送,后面有欢迎语 message 
+# start_session 会话开始,通常为数组推送,后面有欢迎语 message
 type: "start_session",
-data: 
+data:
   content: "对话开始"
 
 # transfer 会话被转接,通常为数组推送,后面有转接内容 message 如: '会话转接成功,客服xx为您服务'
 type: "transfer",
-data: 
+data:
   content: "会话转接"
 
 type: "info_transfer",
-data: 
+data:
   content: "客服Jerry213转接会话"
 
 type: "close",
-data: 
+data:
   content: "会话关闭"
 
 ```
@@ -555,13 +640,32 @@ data:
 ****************************************************************
 
 
-## 机器人评价
+## urobot机器人会话评价（urobot使用)
 
-TODO: 以后完善
+`POST /im/sessions/robot_survey`
+
+### 参数
+
+| 属性名                | 类型   | 必填   | 说明     |
+| ----------------- | ---- | ---- | ------ |
+| customer_token    | 字符串 | 是   | 应用端客户唯一标识     |
+| im_sub_session_id | 整型   | 是    | 回话ID   |
+| option_id         | 整型   | 是    | 评价选项ID (2：满意 3：一般 4：不满意)|
+| remark            | 字符型  | 否    | 评价备注   |
+| robot_id       | 整型   |  是  | udesk机器人id    |
+| scene_id       | 整型   | 是   | udesk机器人对应场景id  |
+
+### 返回数据
+
+| 属性名     | 类型   | 说明             |
+| ------- | ---- | -------------- |
+| code    | 整型   | 执行结果码，1000代表成功 |
+| message | 字符型  | 返回信息           |
 
 ****************************************************************
 
-## 会话评价
+
+## 会话评价（评价客服）
 
 `POST /im/sessions/survey`
 
@@ -574,6 +678,7 @@ TODO: 以后完善
 | remark            | 否   | 评价备注   |
 
 
+
 ### 返回数据
 
 | 属性名  | 类型  | 说明             |
@@ -582,6 +687,109 @@ TODO: 以后完善
 
 ********************************
 
+
+## 问题评价(仅限urobot使用)
+
+`POST /im/messages/answer_survey`
+
+### 请求参数
+
+| 属性名               | 类型   | 必填   | 说明                         |
+| ----------------- | ---- | ---- | -------------------------- |
+| customer_token    | 字符串  | 是    | 应用端客户唯一标识                  |
+| messgae_id        | 整型   | 是    | 问题答案所在的消息id                |
+| im_sub_session_id | 整型   | 是    | 会话id                       |
+| mesaage_id        | 整型   | 是    | 消息id                       |
+| option_id         | 整型   | 是    | 评价选项id(1表示满意，2表示不满意,默认为满意) |
+| robot_id          | 整型   | 是    | udesk机器人id                 |
+| scene_id          | 整型   | 是    | udesk机器人对应场景id             |
+
+### 返回数据
+
+| 属性名     | 类型   | 说明             |
+| ------- | ---- | -------------- |
+| code    | 整型   | 执行结果码，1000代表成功 |
+| message | 字符型  | 返回信息           |
+
+*******************
+
+
+## 用户点击行为接口
+
+`POST /im/messages/hit`
+
+### 请求参数
+
+| 属性名            | 类型   | 必填 | 说明                                                         |
+| ----------------- | ------ | ---- | ------------------------------------------------------------ |
+| customer_token    | 字符串 | 是   | 应用端客户唯一标识                                           |
+| im_sub_session_id | 整型   | 是   | 会话id                                                       |
+| message_id        | 整型   | 是   | 机器人答案的消息id                                           |
+| robot_id          | 整型   | 是   | 机器人id                                                     |
+| scene_id          | 整型   | 是   | 场景id                                                       |
+| question          | 整型   | 否   | 问题内容                                                     |
+| question_id       | 整型   | 是   | 问题id                                                       |
+| query_type        | 整型   | 是   | 点击类型  6：常见问题点击  7：建议列表点击                         |
+
+### 返回结果
+
+参考urobot回复消息通知接口的返回
+
+*********************************
+
+
+## 获取urobot列表
+
+`GET /im/urobots`
+
+### 返回数据
+
+| 属性名         | 类型   | 说明             |
+| ----------- | ---- | -------------- |
+| code        | 整型   | 执行结果码，1000代表成功 |
+| message     | 字符型  | 返回结果信息         |
+| urobot_list | 对象数组 | 机器人列表的详细信息     |
+
+### 示例
+
+```json
+{
+  "code": 1000,
+  "message": "请求成功",
+  "urobot_list": [
+    {
+      "id": 2,
+      "name": "默认机器人",
+      "logo": "",
+      "scene_list": [
+        {
+          "id": 114,
+          "name": "默认场景"
+        },
+        {
+          "id": 116,
+          "name": "系统默认场景"
+        }
+      ],
+      "created_at": "2018-01-23T10:55:20.000+08:00"
+    },
+    {
+      "id": 3,
+      "name": "测试",
+      "logo": "",
+      "scene_list": [
+        {
+          "id": 120,
+          "name": "系统默认场景"
+        }
+      ],
+      "created_at": "2018-02-05T11:25:30.000+08:00"
+    }
+  ]
+}
+```
+
+*****
 
 ## 查询排队状态
 
