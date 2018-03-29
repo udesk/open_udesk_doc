@@ -4,6 +4,7 @@
 
 | 内容                                 | 日期       | 更新人 | 版本   |
 |------------------------------------|----------|-----|------|
+| 满意度添加新的模式                       | 20180329 | 韦昭  | v1.2 |
 | 添加常见问答(重要)                        | 201700906 | 韦昭  | v1.1 |
 | 添加客户是否会话中接口                        | 20170803 | 韦昭  | v1.0 |
 | 发送消息 添加错误返回类型                      | 20170728 | 韦昭  | v0.4 |
@@ -221,7 +222,7 @@ assign_type 为 agent 时, assign_info 的结构如下:
           id: 
           text: 非常满意|满意|一般|不满意|非常不满意 (可以修改的,显示在BI中)
           desc: 不可以修改的
-          tags: [{text: '回复及时'},{text: ''}]
+          tags: "tag1,tag2"
           remark_option: hide|required|optional
           }]
       },
@@ -230,7 +231,7 @@ assign_type 为 agent 时, assign_info 的结构如下:
         options: [{
           id: 
           text: 满意|一般|不满意
-          tags: [{text: '回复及时'},{text: ''}]
+          tags: "tag1,tag2"
           remark_option: hide|required|optional
           }]
       },
@@ -239,7 +240,7 @@ assign_type 为 agent 时, assign_info 的结构如下:
         options: [{
           id: 
           text: 满意|一般|不满意
-          tags: [{text: '回复及时'},{text: ''}]
+          tags: "tag1,tag2"
           remark_option: hide|required|optional
           }]
       },
