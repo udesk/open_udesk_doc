@@ -145,7 +145,7 @@ assign_type 为 ‘urobot’ 时, assign_info 的结构如下:
 | sessionId   | 整型   | 会话id    |
 | logId       | 整型   | 该条log的id |
 | leadingWord | 字符串  | 引导语     |
-| helloWorld  | 字符串  | 欢迎语     |
+| helloWord  | 字符串  | 欢迎语     |
 | robotName   | 字符串  | 机器人名称   |
 | logoUrl     | 字符串  | 机器人头像   |
 | topAsk      | 对象   | 常见问题列表  |
@@ -163,7 +163,7 @@ assign_type 为 ‘urobot’ 时, assign_info 的结构如下:
     "robotName": "测试",
     "logoUrl": null,
     "leadingWord": "你好，很高兴为您服务！",
-    "helloWorld": "你好，很高兴为您服务！"
+    "helloWord": "你好，很高兴为您服务！"
     "topAsk": [
       {
         "quesitionType": "问题类型１"，
