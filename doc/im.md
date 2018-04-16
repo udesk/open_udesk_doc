@@ -429,7 +429,7 @@ messages: 对像
   logId:  消息的Id
   aid: 答案id
   ansContent: 答案内容
-  ansType: 答案类型 (1表示普通答案，4表示返回寒暄，6表示未知说辞)
+  ansType: 答案类型 (1表示普通答案，2表示答案和建议列表, 3表示建议列表, 4表示返回寒暄，6表示未知说辞, 8表示敏感词 )
   hitQuestion: 问题内容
   suggestQuestionList: 建议列表
 ```
@@ -799,7 +799,7 @@ data:
 
 | 参数名              | 类型   | 必填   | 说明      |
 | ---------------- | ---- | ---- | ------- |
-| im_subsession_id | 整型   | 是    | 会话id    |
+| im_sub_session_id | 整型   | 是    | 会话id    |
 | robot_id         | 整型   | 是    | 机器人id   |
 | scene_id         | 整型   | 是    | 机器人场景id |
 
