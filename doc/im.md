@@ -699,7 +699,6 @@ data:
 | customer_token    | 字符串  | 是    | 应用端客户唯一标识                  |
 | messgae_id        | 整型   | 是    | 问题答案所在的消息id                |
 | im_sub_session_id | 整型   | 是    | 会话id                       |
-| mesaage_id        | 整型   | 是    | 消息id                       |
 | option_id         | 整型   | 是    | 评价选项id(1表示满意，2表示不满意,默认为满意) |
 | robot_id          | 整型   | 是    | udesk机器人id                 |
 | scene_id          | 整型   | 是    | udesk机器人对应场景id             |
@@ -790,6 +789,33 @@ data:
 ```
 
 *****
+
+
+##  转人工统计接口(urobot使用)
+
+`POST /im/sessions/transfer_survey`
+
+### 请求参数
+
+| 参数名              | 类型   | 必填   | 说明      |
+| ---------------- | ---- | ---- | ------- |
+| im_subsession_id | 整型   | 是    | 会话id    |
+| robot_id         | 整型   | 是    | 机器人id   |
+| scene_id         | 整型   | 是    | 机器人场景id |
+
+
+
+### 返回数据
+
+| 属性名     | 类型   | 说明   |
+| ------- | ---- | ---- |
+| code    | 整型   | 状态   |
+| message | 字符型  | 请求结果 |
+
+****************
+
+
+
 
 ## 查询排队状态
 
