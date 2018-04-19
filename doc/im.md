@@ -934,14 +934,14 @@ data:
 
 | 属性名         | 类型  | 说明                |
 |-------------|-----|-------------------|
-|id     |数字|
+|id     |整型|
 |name     | 字符串|  客服姓名 |
 |nick     | 字符串|  客服昵称 |
 |avatar     | 字符串|  客服头像 |
 |im_status      | 字符串|  在线状态 online/busy/offline (在线/忙碌/离线)|
 |im_custom_status     | 字符串|  自定义状态,仅在im_status为busy时有效|
-|im_session_num     | 数字 | 当前接待人数,仅在im_status为online/busy时有效,可能为0,可能有数,但数字无意义|
-|im_max_join_num      | 数字 | 客服最大接待人数,仅在im_status为online/busy时有效,可能为0,可能有数,但数字无意义|
+|im_session_num     | 整型 | 当前接待人数,仅在im_status为online/busy时有效,可能为0,可能有数,但数字无意义|
+|im_max_join_num      | 整型 | 客服最大接待人数,仅在im_status为online/busy时有效,可能为0,可能有数,但数字无意义|
 
 ```json
 // 示例
