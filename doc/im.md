@@ -377,13 +377,15 @@ API客户发送消息给客服
 | 参数名               | 类型  | 必填  | 说明                                                       |
 |-------------------|-----|-----|----------------------------------------------------------|
 | customer_token    | 字符串 | 是   | 应用端客户唯一标识                                                |
-| im_sub_session_id | 整型  | 是   | 会话ID / ID为0或空为机器人问题/ID为-1为Udesk机器人问题                 |
+| im_sub_session_id | 整型  | 是   | 会话ID / ID为0或空为机器人问题/ID为-1为Udesk机器人问题/ID为-2为留言消息                |
 | message_id        | 字符串 | 是   | 消息id/公司消息唯一标识（Udesk机器人可不传）                           |
 | type              | 字符串 | 否   | 消息类型, 'message', 'image', 'audio', 'rich', 默认为 'message' |
 | data              | 对象  | 是   | 消息内容 (详情见 消息内容格式 一节)                                     |
 | robot_id          | 整型   | 否    | Udesk机器人id(Udesk机器人必填)                   |
 | scene_id          | 整型   | 否    | Udesk机器人对应场景id(Udesk机器人必填)               |
 | urobot_session_id | 整型   |否     |Udesk机器人对应的会话id                             |
+| agent_id       | 整型   | 否   | 指定分配的客服id|
+| group_id       | 整型   | 否   | 指定分配的客服组id|
 
 
 ### 返回数据
