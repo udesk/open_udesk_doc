@@ -119,6 +119,8 @@
 > robot_role_id 需要先在云问端设置好
 > assign_type为’urobot‘时，robot_id和scene_id必填
 
+> 如果使用这个customer_token的客户在系统中不存在,udesk会自动创建一个名为API匿名（customer_token）的用户,括号中的
+> 的customer_token是传参的值。
 
 ### 返回数据
 
