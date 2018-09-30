@@ -481,6 +481,9 @@ messages: 对像
   ansType: 答案类型 (1表示普通答案，2表示答案和建议列表, 3表示建议列表, 4表示返回寒暄，6表示未知说辞, 8表示敏感词 )
   hitQuestion: 问题内容
   suggestQuestionList: 建议列表
+  flowId: 当前流程ID,
+  flowTitle: 当前流程标题,
+  flowContent: 当前流程答案,
 ```
 
 ```json
@@ -762,6 +765,43 @@ data:
 *******************
 
 
+## 流程问题接口(仅限urobot使用)
+
+`POST /im/messages/flow`
+
+### 请求参数
+
+| 属性名               | 类型   | 必填   | 说明                         |
+| ----------------- | ---- | ---- | -------------------------- |
+| customer_token    | 字符串  | 是    | 应用端客户唯一标识                  |
+| im_sub_session_id | 整型   | 是    | 会话id                       |
+| flow_id          | 整型   | 是    | 选中的flow_id                 |
+| robot_id          | 整型   | 是    | udesk机器人id                 |
+| scene_id          | 整型   | 是    | udesk机器人对应场景id             |
+
+flow_id获取:
+
+当收到推送消息有 messages.flowContent 字段并标签中有 `data-type="2"`,即可调用本接口
+
+例:
+
+```html
+<p><b data-type="2" class="flow-item" data-id="81" data-robotid="54">流程子项A跳转子项-1</b></p><p>流程子项A跳转子项-2<br></p>
+<p><b data-type="1" class="flow-item" data-id="307" data-robotid="54">分类问题A</b></p><p>分类问题B</p>
+```
+
+当点击 **流程子项A跳转子项** 中,可以使用 flow_id=81来调用本接口
+
+### 返回数据
+
+| 属性名     | 类型   | 说明             |
+| ------- | ---- | -------------- |
+| code    | 整型   | 执行结果码，1000代表成功 |
+
+推送数据参考urobot回复消息通知接口的返回
+
+*******************
+
 ## 用户点击行为接口
 
 `POST /im/messages/hit`
@@ -996,7 +1036,7 @@ POST请求,JSON格式.
 建议
 
 - 用nginx/apache 做前置,这样不管后端应用是不是处理正确,都能在前端 上看到日志是否收到请求
-- 应用服务器先什么先只把收到的请求 body 打印到日志看下是不是到收请求,再进行业务逻辑开发
+- 应用服务器先只把收到的请求 body 打印到日志看下是不是到收请求,再进行业务逻辑开发
 
 ### 为什么回复消息什么时候会返回多条消息?
 
